@@ -114,4 +114,27 @@ public class FlightService {
         // Verifica si el precio está en el rango correcto
         return Objects.equals(airlinetocheck, airline);
     }
+
+    public int searchPriceById(int id) {
+        try {
+            ObjectMapper objectMapper = new ObjectMapper();
+            InputStream inputStream = getClass().getClassLoader().getResourceAsStream("flights.json");
+
+            if (inputStream != null) {
+                Flight[] flights = objectMapper.readValue(inputStream, Flight[].class);
+                for (Flight flight : flights) {
+                    if (flight.getId() == id) {
+                        return flight.getPrice();
+                    }
+                }
+            }
+            return -1; // Indica que no se encontró el vuelo con el ID dado
+        } catch (IOException e) {
+            throw new RuntimeException("Error leyendo el archivo JSON ", e);
+        }
+    }
+
+
+
+
 }
